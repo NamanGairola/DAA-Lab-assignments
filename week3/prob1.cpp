@@ -31,7 +31,7 @@ int main()
         }
         cout<<"\n";
         cout<<"comparison="<<com<<"\n";
-        cout<<"swap="<<swa<<"\n";
+        cout<<"shift="<<swa<<"\n";
     }
     return 0;
 }
