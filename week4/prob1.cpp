@@ -1,69 +1,56 @@
 #include<iostream>
 using namespace std;
-// ci store comparison and inversion
-void bubblesort(int arr[],int n,int ci[])
+//ci for comparison and inversion
+void merge(int arr[],int l,int m,int r,int ci[])
 {
-    int i,j,t;
-    for(i=0;i<n-1;i++)
+    int i,j,k;
+    int n1=m-l+1;
+    int n2=r-m;
+    int L[n1],R[n2];
+    for(i=0;i<n1;i++)
     {
-        for(j=0;j<n;j++)
-        {
-            ci[0]++;
-            if(arr[j]>arr[j+1])
-            {
-                t=arr[j];
-                arr[j]=arr[j+1];
-                arr[j+1]=t;
-                ci[1]++;
-            }
-        }
+        L[i]=arr[l+i];
     }
-}
-void msort(int arr[],int n,int ci[])
-{
-    int m=n/2-1,lc=m+1,rc=n-m-1,k,i,j;
-    int L[lc],R[rc];
-    for(i=0;i<lc;i++)
+    for(j=0;j<n2;j++)
     {
-        L[i]=arr[i];
+        R[j]=arr[m+1+j];
     }
-    j=m+1;
-    for(i=0;i<rc;i++)
-    {
-        R[i]=arr[j];
-        j++;
-    }
-    bubblesort(L,lc,ci);
-    bubblesort(R,rc,ci);
+    i=0;
     j=0;
-    k=0;
-    for(i=0;i<lc && j<rc;)
+    k=l;
+    while(i<n1 && j<n2)
     {
         ci[0]++;
-        if(L[i]<R[j])
+        if(L[i]<=R[j])
         {
-            arr[k++]=L[i];
-            i++;
+            arr[k++]=L[i++];
             ci[1]++;
         }
         else
         {
-            arr[k++]=R[j];
-            j++;
+            arr[k++]=R[j++];
             ci[1]++;
         }
     }
-    while(i<lc)
+    while(i<n1)
     {
-        arr[k++]=L[i];
-        i++;
+        arr[k++]=L[i++];
         ci[1]++;
     }
-    while(j<rc)
+    while(j<n2)
     {
-        arr[k++]=R[j];
-        j++;
+        arr[k++]=R[j++];
         ci[1]++;
+    }
+}
+void mergesort(int arr[],int l,int r,int ci[])
+{
+    if(l<r)
+    {
+        int m=(l+r)/2;
+        mergesort(arr,l,m,ci);
+        mergesort(arr,m+1,r,ci);
+        merge(arr,l,m,r,ci);
     }
 }
 int main()
@@ -80,7 +67,7 @@ int main()
         {
             cin>>arr[i];
         }
-        msort(arr,n,ci);
+        mergesort(arr,0,n-1,ci);
         for(i=0;i<n;i++)
         {
             cout<<arr[i]<<" ";
@@ -89,6 +76,5 @@ int main()
         cout<<"comparison = "<<ci[0]<<"\n";
         cout<<"inversion = "<<ci[1]<<"\n";
     }
-
     return 0;
 }
